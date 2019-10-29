@@ -14,14 +14,13 @@ void setup() {
   lcd.begin(16, 2);
   pinMode(8, INPUT_PULLUP);
   pinMode(10, INPUT_PULLUP);
-
+  lcd.print("RACE !");
 }
 
 void loop() {
 
-  int pressureSensor = digitalRead(8);
-
-  if (IDLE_STATE == state) {    
+  if (IDLE_STATE == state) {
+    int pressureSensor = digitalRead(8);
     if (pressureSensor) {
       lcd.clear();
       state = RACING_STATE;
@@ -32,8 +31,9 @@ void loop() {
     long elapsedTime = millis() - timeStart;
     lcd.setCursor(0, 0);
     lcd.print((float)elapsedTime / 1000);
-    if (pressureSensor) {
-      if (elapsedTime > 5000) {
+    if (elapsedTime > 5000) {
+      int pressureSensor = digitalRead(8);
+      if (pressureSensor) {
         state = AFTER_RACING_STATE;
         lcd.setCursor(0, 1);
         lcd.print("REZULTAT FINAL");
@@ -44,9 +44,9 @@ void loop() {
     }
   }
 
-  if (AFTER_RACING_STATE == state){
+  if (AFTER_RACING_STATE == state) {
     int resetButton = digitalRead(10);
-    if (resetButton){
+    if (resetButton) {
       lcd.clear();
       lcd.print("RACE !");
       state = IDLE_STATE;
